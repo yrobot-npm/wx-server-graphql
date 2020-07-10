@@ -1,0 +1,21 @@
+{
+	"name": "wx-server-graphql",
+	"version": "1.0.0",
+	"description": "将小程序云开发server端graphql化工具",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"wx",
+		"graphql",
+		"server",
+		"yrobot",
+		"mina"
+	],
+	"author": "Yrobot",
+	"license": "MIT",
+	"dependencies": {
+		"graphql": "^15.3.0"
+	}
+}
