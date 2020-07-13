@@ -130,7 +130,7 @@ export interface OptionsData {
 
 type Middleware = (request: Request, response: Response) => Promise<void>;
 
-const httpError = (statusCode, message, errProps = {}) => {
+const httpError = (statusCode: number, message: string, errProps = {}) => {
   let err = new Error(message)
   err = { ...err, ...errProps };
   return err
