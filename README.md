@@ -1,4 +1,4 @@
-# GraphQL WX-Cloud-Server Middleware
+# GraphQL WX-Cloud-Server Middleware（小程序云开发的graphql中间层）
 
 ## Installation
 
