@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"changelog": "node resources/gen-changelog.js",
+		"debug": "tsc -w ./src/index.ts",
 		"build": "node resources/build.js"
 	},
 	"keywords": [

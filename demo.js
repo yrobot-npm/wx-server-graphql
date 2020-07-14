@@ -1,4 +1,4 @@
-const { graphqlWXServer } = require('./dist')
+const { graphqlWXServer } = require('./src')
 
 var { buildSchema } = require('graphql')
 
@@ -26,10 +26,10 @@ graphqlWXServer({
 		},
 		operationName: 'RollDice',
 		query: `
-        query RollDice($dice: Int!, $sides: Int) {
-          rollDice(numDice: $dice, numSides: $sides)
-        }
-      `,
+		    query RollDice($dice: Int!, $sides: Int) {
+		      rollDice(numDice: $dice, numSides: $sides)
+		    }
+		  `,
 	},
 	context: { id: 'graphqlWXServer' },
 	schema: schema,

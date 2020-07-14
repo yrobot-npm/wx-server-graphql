@@ -154,10 +154,8 @@ export interface OptionsData {
   typeResolver?: GraphQLTypeResolver<unknown, unknown>;
 }
 
-const httpError = (statusCode: number, message: string, errProps = {}) => {
-  let err = new Error(message)
-  err = { ...err, ...errProps };
-  return err
+const httpError = (statusCode: number, message: string, errDtails = {}) => {
+  return { statusCode, message, ...errDtails }
 }
 
 export async function graphqlWXServer(options: Options): Promise<any> {
@@ -259,7 +257,7 @@ export async function graphqlWXServer(options: Options): Promise<any> {
     }
 
   } catch (error) {
-    result = { data: undefined, errors: error.graphqlErrors ?? [error] };
+    result = { data: undefined, errors: error.graphqlErrors || [error] };
   }
 
   return result
