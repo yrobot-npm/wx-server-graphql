@@ -94,3 +94,6 @@ export const Provider = ({ children }) => (
 	<ApolloProvider client={client}>{children}</ApolloProvider>
 )
 ```
+
+## 具体使用细节可以参考文章
+[《小程序云开发支持graphql》](https://developers.weixin.qq.com/community/develop/article/doc/000e2e48dbcdc05166aa1a97050813)
