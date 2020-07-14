@@ -27,16 +27,42 @@ type MaybePromise<T> = Promise<T> | T;
 
 export type Options = OptionsData;
 
+
+/**
+ * All information about a GraphQL request.
+ */
+export interface RequestInfo {
+  /**
+   * The parsed GraphQL document.
+   */
+  document: DocumentNode;
+
+  /**
+   * The variable values used at runtime.
+   */
+  variables: { readonly [name: string]: unknown } | null;
+
+  /**
+   * The (optional) operation name requested.
+   */
+  operationName: string | null;
+
+  /**
+   * The result of executing the operation.
+   */
+  result: FormattedExecutionResult;
+
+  /**
+   * A value to pass as the context to the graphql() function.
+   */
+  context?: unknown;
+}
+
 export interface OptionsData {
   /**
    * props from wx-cloud-serv func param
    */
   wxParams: any;
-
-  /**
-   * context  from wx-cloud-serv func param
-   */
-  wxContext: any;
 
   /**
    * A GraphQL schema from graphql-js.
@@ -46,7 +72,7 @@ export interface OptionsData {
   /**
    * A value to pass as the context to this middleware.
    */
-  // context?: unknown;
+  context?: unknown;
 
   /**
    * An object to pass as the rootValue to the graphql() function.
@@ -128,15 +154,13 @@ export interface OptionsData {
   typeResolver?: GraphQLTypeResolver<unknown, unknown>;
 }
 
-type Middleware = (request: Request, response: Response) => Promise<void>;
-
 const httpError = (statusCode: number, message: string, errProps = {}) => {
   let err = new Error(message)
   err = { ...err, ...errProps };
   return err
 }
 
-export default async function graphqlWXServer(options: Options): Promise<any> {
+export async function graphqlWXServer(options: Options): Promise<any> {
   // Higher scoped variables are referred to at various stages in the asynchronous state machine below.
   let params: GraphQLParams | undefined;
   let formatErrorFn = formatError;
@@ -154,7 +178,7 @@ export default async function graphqlWXServer(options: Options): Promise<any> {
     const fieldResolver = optionsData.fieldResolver;
     const typeResolver = optionsData.typeResolver;
     // const extensionsFn = optionsData.extensions;
-    const context = optionsData.wxContext;
+    const context = optionsData.context;
     const parseFn = optionsData.customParseFn ?? parse;
     const executeFn = optionsData.customExecuteFn ?? execute;
     const validateFn = optionsData.customValidateFn ?? validate;
