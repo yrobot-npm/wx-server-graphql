@@ -52,27 +52,31 @@ import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloLink, Observable } from 'apollo-link'
+import { print } from 'graphql/language/printer'
 
 // 利用link重置apolloClient请求grapql的方式为wx.cloud.callFunction
 // 参考文档 https://www.apollographql.com/blog/apollo-link-creating-your-custom-graphql-client-c865be0ce059/
 class WXLink extends ApolloLink {
-	constructor(options = {}) {
-		super()
-		this.options = options
-	}
-	request(operation) {
-		return new Observable((observer) => {
-			wx.cloud.callFunction({
-				name: this.options.name || 'graphql',
-				data: operation,
-				success: function (res) {
-					observer.next(res)
-					observer.complete()
-				},
-				fail: observer.error,
-			})
-		})
-	}
+  constructor(options = {}) {
+    super()
+    this.options = options
+  }
+  request(operation) {
+    return new Observable(observer => {
+      wx.cloud.callFunction({
+        name: this.options.name || 'graphql',
+        data: {
+          ...operation,
+          query: print(operation.query)
+        },
+        success: function(res) {
+          observer.next(res.result)
+          observer.complete()
+        },
+        fail: observer.error
+      })
+    })
+  }
 }
 
 wx.cloud.init({
